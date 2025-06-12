@@ -24,7 +24,6 @@ class Predictor:
         spark_conf = SparkConf() \
             .setMaster("k8s://https://kubernetes.default.svc:443") \
             .set("spark.kubernetes.namespace", "default") \
-            .set("spark.kubernetes.container.image", "main-image") \
             .set("spark.kubernetes.authenticate.driver.serviceAccountName", "spark") \
             .setAll(config['SPARK'].items())
         

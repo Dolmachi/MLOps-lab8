@@ -13,9 +13,9 @@ spec:
         command: ["python", "src/main.py"]
         resources:
           requests:
-            memory: "5Gi"
+            memory: "4Gi"
             cpu: "2"
           limits:
             memory: "6Gi"
-            cpu: "3"
+            cpu: "2"
       restartPolicy: Never
