@@ -14,6 +14,8 @@ libraryDependencies ++= Seq(
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
+  "org.apache.spark" %% "spark-kubernetes"        % "3.4.3",
+
   // Mongo-Spark connector 10.3.0
   "org.mongodb.spark" %% "mongo-spark-connector"  % "10.3.0",
 

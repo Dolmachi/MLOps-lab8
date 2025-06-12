@@ -9,6 +9,7 @@ spec:
       containers:
       - name: main
         image: main-image
+        imagePullPolicy: Never
         command: ["python", "src/main.py"]
         resources:
           requests:

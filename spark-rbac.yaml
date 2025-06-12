@@ -10,12 +10,21 @@ metadata:
   name: spark-role
   namespace: default
 rules:
+# ─── ядро работы драйвера ──────────────────────────────
 - apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["create", "delete", "get", "list", "watch"]
-- apiGroups: [""]
-  resources: ["services"]
-  verbs: ["get", "list"]
+  resources:
+    - pods
+    - pods/exec
+    - pods/log
+    - services
+    - configmaps
+    - persistentvolumeclaims
+    - endpoints
+  verbs: ["create", "delete", "deletecollection", "get", "list", "watch", "patch", "update"]
+# ─── чтение events для graceful-shutdown ───────────────
+- apiGroups: ["events.k8s.io", ""]
+  resources: ["events"]
+  verbs: ["create", "get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

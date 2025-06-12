@@ -16,6 +16,7 @@ spec:
       containers:
       - name: datamart
         image: datamart-image
+        imagePullPolicy: Never
         resources:
           requests:
             memory: "6Gi"
