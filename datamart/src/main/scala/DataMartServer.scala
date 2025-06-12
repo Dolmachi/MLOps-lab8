@@ -29,7 +29,7 @@ object DataMartServer {
 
   /* ───── helpers ─────────────────────────────────────────────── */
 
-  private val numPartitions = 30 // Разбиваем на 30 партиций (~100 000 строк в каждой)
+  private val numPartitions = 12 // Разбиваем на 30 партиций (~100 000 строк в каждой)
 
   private val processedAll: DataFrame = {
     val base = DataMart.preprocessData(DataMart.getRawData)

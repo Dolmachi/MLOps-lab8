@@ -3,10 +3,10 @@ import subprocess
 import configparser
 from pathlib import Path
 from pyspark.sql import SparkSession
-from app.logger import Logger
+from logger import Logger
 
 
-root_dir = Path(__file__).parent.parent.parent
+root_dir = Path(__file__).parent.parent
 CONFIG_PATH = str(root_dir / 'config.ini')
 CSV_PATH = str(root_dir / 'data' / 'products.csv')
 DUMP_PATH = str(root_dir / 'data' / 'mongo-dump')
