@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datamart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datamart
+  template:
+    metadata:
+      labels:
+        app: datamart
+    spec:
+      serviceAccountName: spark
+      containers:
+      - name: datamart
+        image: datamart-image
+        resources:
+          requests:
+            memory: "6Gi"
+            cpu: "2"
+          limits:
+            memory: "8Gi"
+            cpu: "3"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datamart
+spec:
+  selector:
+    app: datamart
+  ports:
+  - port: 8080
+    targetPort: 8080

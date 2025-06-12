@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: user
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "12345"
+        volumeMounts:
+        - name: dump-volume
+          mountPath: /dump
+        - name: restore-script
+          mountPath: /docker-entrypoint-initdb.d/restore.sh
+          subPath: restore.sh
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+      volumes:
+      - name: dump-volume
+        hostPath:
+          path: /dump
+      - name: restore-script
+        configMap:
+          name: restore-script-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    targetPort: 27017
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: restore-script-config
+data:
+  restore.sh: |
+    #!/bin/bash
+    set -e
+    echo "Restoring dump …"
+    mongorestore --username "$MONGO_INITDB_ROOT_USERNAME" \
+                 --password "$MONGO_INITDB_ROOT_PASSWORD" \
+                 --authenticationDatabase admin \
+                 /dump && \
+    touch /data/db/RESTORE_DONE

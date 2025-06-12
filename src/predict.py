@@ -21,12 +21,16 @@ class Predictor:
         config = configparser.ConfigParser()
         config.optionxform = str
         config.read(CONFIG_PATH)
-        spark_conf = SparkConf().setAll(config['SPARK'].items())
+        spark_conf = SparkConf() \
+            .setMaster("k8s://https://kubernetes.default.svc:443") \
+            .set("spark.kubernetes.namespace", "default") \
+            .set("spark.kubernetes.container.image", "main-image") \
+            .set("spark.kubernetes.authenticate.driver.serviceAccountName", "spark") \
+            .setAll(config['SPARK'].items())
         
         # Создаем сессию
         self.spark = SparkSession.builder \
             .appName("KMeans") \
-            .master("local[*]") \
             .config(conf=spark_conf) \
             .getOrCreate()
             
