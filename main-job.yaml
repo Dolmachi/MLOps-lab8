@@ -4,6 +4,10 @@ metadata:
   name: main-job
 spec:
   template:
+    metadata:
+      labels:
+        spark-role: driver
+        app: main
     spec:
       serviceAccountName: spark
       containers:
@@ -11,6 +15,8 @@ spec:
         image: main-image
         imagePullPolicy: Never
         command: ["python", "src/main.py"]
+        ports:
+        - containerPort: 7078
         resources:
           requests:
             memory: "5Gi"
