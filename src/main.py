@@ -10,7 +10,7 @@ class InferenceJob:
         self.pred = Predictor()
         self.datamart_url = "http://datamart:8080/api"
 
-        self.num_partitions = 12
+        self.num_partitions = 30
         self.current_partition = 0
 
     def run(self):

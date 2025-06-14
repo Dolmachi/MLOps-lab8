@@ -34,7 +34,7 @@ object DataMartServer {
 
   /* ───── helpers ─────────────────────────────────────────────── */
 
-  private val numPartitions = 12
+  private val numPartitions = 30
 
   private val processedAll: DataFrame = {
     val base = DataMart.preprocessData(DataMart.getRawData)
