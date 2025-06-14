@@ -110,6 +110,8 @@ object DataMart {
       predictionsDF.write
         .format("mongodb")
         .mode("append")
+        .option("replaceDocument", "true")
+        .option("upsert", "true")
         .option("uri", mongoUri)
         .option("database", "products_database")
         .option("collection", "products_clusters")

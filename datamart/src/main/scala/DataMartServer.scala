@@ -1,16 +1,18 @@
 import akka.actor.ActorSystem
-import com.typesafe.config.ConfigFactory
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
+import com.typesafe.config.ConfigFactory
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.auto._
 import org.apache.logging.log4j.{LogManager, Logger}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, spark_partition_id}
 import org.apache.spark.storage.StorageLevel
+import scala.concurrent.Await
+import scala.concurrent.duration._
 import scala.jdk.CollectionConverters._
 import akka.NotUsed
 
@@ -21,7 +23,10 @@ object DataMartServer {
   implicit val system = ActorSystem(
     "DataMartServer",
     ConfigFactory
-      .parseString("akka.http.server.request-timeout = 600s")
+      .parseString(
+        """akka.http.server.request-timeout = 600s
+          |akka.http.server.parsing.max-content-length = 256m
+          |""".stripMargin)
       .withFallback(ConfigFactory.load())
   )
   implicit val ec     = system.dispatcher
@@ -29,11 +34,11 @@ object DataMartServer {
 
   /* ───── helpers ─────────────────────────────────────────────── */
 
-  private val numPartitions = 12 // Разбиваем на 30 партиций (~100 000 строк в каждой)
+  private val numPartitions = 12
 
   private val processedAll: DataFrame = {
     val base = DataMart.preprocessData(DataMart.getRawData)
-      .repartition(numPartitions) // Разбиваем на 30 партиций
+      .repartition(numPartitions)
       .persist(StorageLevel.MEMORY_AND_DISK)
     println(s"⇢ Кэшированный датасет, кол-во записей = ${base.count()}")
     base
@@ -94,15 +99,19 @@ object DataMartServer {
   /* ───── main ───────────────────────────────────────────────── */
 
   def main(args: Array[String]): Unit = {
-    val binding = Http().newServerAt("0.0.0.0", 8080).bind(route)
+    val bindingF = Http().newServerAt("0.0.0.0", 8080).bind(route)
     println("⇢ DataMart-API запущен: http://0.0.0.0:8080/api")
 
     sys.addShutdownHook {
-      binding.flatMap(_.unbind()).onComplete { _ =>
+      try {
+        Await.result(bindingF.flatMap(_.unbind()), 30.seconds)
+      } finally {
         processedAll.unpersist()
         DataMart.stop()
         system.terminate()
       }
     }
+
+    Await.result(bindingF.flatMap(_.whenTerminated), Duration.Inf)
   }
 }
