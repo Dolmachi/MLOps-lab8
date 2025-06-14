@@ -47,13 +47,30 @@ class InferenceJob:
             self.log.error(f"Failed to fetch slice {partition_index}: {e}")
             return None
 
-    def send_to_datamart(self, df: DataFrame):
-        payload = [
-            {"_id": row["_id"], "cluster": row["cluster"]}
-            for row in df.select("_id", "cluster").toLocalIterator()
-        ]
-        r = requests.post(f"{self.datamart_url}/predictions", json=payload, timeout=(30, 1200))
+    def send_to_datamart(self, df: DataFrame, batch_size: int = 5_000) -> None:
+        payload = (
+            {"_id": r["_id"], "cluster": r["cluster"]}
+            for r in df.select("_id", "cluster").toLocalIterator()
+        )
+
+        batch = []
+        for doc in payload:
+            batch.append(doc)
+            if len(batch) == batch_size:
+                self._post_batch(batch)
+                batch.clear()
+
+        if batch:
+            self._post_batch(batch)
+
+    def _post_batch(self, batch):
+        r = requests.post(
+            f"{self.datamart_url}/predictions",
+            json=batch,
+            timeout=(30, 1200)
+        )
         r.raise_for_status()
+
 
 if __name__ == "__main__":
     InferenceJob().run()
