@@ -15,8 +15,7 @@ libraryDependencies ++= Seq(
 
   "org.apache.spark" %% "spark-kubernetes"        % sparkVer,
 
-  // Mongo-Spark connector 10.3.0
-  "org.mongodb.spark" %% "mongo-spark-connector"  % "10.3.0",
+  "org.mongodb.spark" %% "mongo-spark-connector"  % "10.5.0" % Provided,
 
   // Логирование
   "org.apache.logging.log4j" % "log4j-core"       % "2.24.1",

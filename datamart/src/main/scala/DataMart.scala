@@ -38,6 +38,10 @@ object DataMart {
     .config("spark.memory.storageFraction", "0.5")
     .config("spark.mongodb.schema.sampleSize", "200")
     .config("spark.dynamicAllocation.enabled","false")
+    .config(
+      "spark.jars.packages",
+      "org.mongodb.spark:mongo-spark-connector_2.12:10.5.0"
+    )
     .getOrCreate()
 
   /*считывание данных из монго*/ 
