@@ -1,20 +1,19 @@
 name := "DataMart"
 version := "1.0"
-scalaVersion := "2.12.15"
+scalaVersion := "2.12.18"
 
-// ──────────────────────────────────────────────────────────────────
-// Зависимости
-// ──────────────────────────────────────────────────────────────────
+val sparkVer = "3.5.6"
+
 libraryDependencies ++= Seq(
-  "org.apache.spark"  %% "spark-sql"              % "3.4.3" % Provided
+  "org.apache.spark"  %% "spark-sql"              % sparkVer
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark"  %% "spark-mllib"            % "3.4.3" % Provided
+  "org.apache.spark"  %% "spark-mllib"            % sparkVer
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark" %% "spark-kubernetes"        % "3.4.3" % Provided,
+  "org.apache.spark" %% "spark-kubernetes"        % sparkVer,
 
   // Mongo-Spark connector 10.3.0
   "org.mongodb.spark" %% "mongo-spark-connector"  % "10.3.0",
@@ -64,3 +63,9 @@ assembly / assemblyOption := (assembly / assemblyOption).value
   .withIncludeDependency(true)
 
 assembly / fullClasspath := (Compile / fullClasspath).value
+
+dependencyOverrides +=
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
+
+libraryDependencySchemes +=
+  "org.scala-lang.modules" %% "scala-parser-combinators" % VersionScheme.EarlySemVer

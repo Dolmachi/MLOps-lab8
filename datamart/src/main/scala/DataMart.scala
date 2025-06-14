@@ -14,7 +14,7 @@ object DataMart {
     .appName("DataMart")
     .master("k8s://https://kubernetes.default.svc:443")
     .config("spark.kubernetes.namespace", "default")
-    .config("spark.kubernetes.container.image", "apache/spark:3.4.3")
+    .config("spark.kubernetes.container.image", "spark:3.5.6-scala2.12-java17-python3-ubuntu")
     .config("spark.kubernetes.authenticate.driver.serviceAccountName", "spark")
     .config("spark.ui.port", "4041")
     .config("spark.mongodb.connection.uri", mongoUri)
