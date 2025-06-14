@@ -16,6 +16,7 @@ object DataMart {
     .config("spark.kubernetes.namespace", "default")
     .config("spark.kubernetes.container.image", "spark:3.5.6-scala2.12-java17-python3-ubuntu")
     .config("spark.kubernetes.authenticate.driver.serviceAccountName", "spark")
+    .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.5.0")
     .config("spark.ui.port", "4041")
     .config("spark.mongodb.connection.uri", mongoUri)
     .config("spark.driver.port", "33221")
@@ -38,10 +39,6 @@ object DataMart {
     .config("spark.memory.storageFraction", "0.5")
     .config("spark.mongodb.schema.sampleSize", "200")
     .config("spark.dynamicAllocation.enabled","false")
-    .config(
-      "spark.jars.packages",
-      "org.mongodb.spark:mongo-spark-connector_2.12:10.5.0"
-    )
     .getOrCreate()
 
   /*считывание данных из монго*/ 

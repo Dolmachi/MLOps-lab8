@@ -1,21 +1,21 @@
 name := "DataMart"
 version := "1.0"
-scalaVersion := "2.12.18"
+scalaVersion := "2.12.15"
 
 val sparkVer = "3.5.6"
 
 libraryDependencies ++= Seq(
-  "org.apache.spark"  %% "spark-sql"              % sparkVer
+  "org.apache.spark"  %% "spark-sql"              % sparkVer % Provided
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark"  %% "spark-mllib"            % sparkVer
+  "org.apache.spark"  %% "spark-mllib"            % sparkVer % Provided
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark" %% "spark-kubernetes"        % sparkVer,
+  "org.apache.spark" %% "spark-kubernetes"        % sparkVer % Provided,
 
-  "org.mongodb.spark" %% "mongo-spark-connector"  % "10.5.0" % Provided,
+  "org.mongodb.spark" %% "mongo-spark-connector"  % "10.5.0",
 
   // Логирование
   "org.apache.logging.log4j" % "log4j-core"       % "2.24.1",
@@ -58,7 +58,7 @@ assembly / assemblyMergeStrategy := {
 
 // включаем зависимости и сам Scala-runtime
 assembly / assemblyOption := (assembly / assemblyOption).value
-  .withIncludeScala(true)
+  .withIncludeScala(false)
   .withIncludeDependency(true)
 
 assembly / fullClasspath := (Compile / fullClasspath).value
