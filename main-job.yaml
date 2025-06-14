@@ -19,3 +19,18 @@ spec:
             memory: "6Gi"
             cpu: "2"
       restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-driver
+  labels:
+    spark-role: driver
+spec:
+  clusterIP: None
+  selector:
+    spark-role: driver
+  ports:
+  - name: driver-rpc
+    port: 7078
+    targetPort: 7078

@@ -1,20 +1,20 @@
 name := "DataMart"
 version := "1.0"
-scalaVersion := "2.12.18"
+scalaVersion := "2.12.15"
 
 // ──────────────────────────────────────────────────────────────────
 // Зависимости
 // ──────────────────────────────────────────────────────────────────
 libraryDependencies ++= Seq(
-  "org.apache.spark"  %% "spark-sql"              % "3.4.3"
+  "org.apache.spark"  %% "spark-sql"              % "3.4.3" % Provided
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark"  %% "spark-mllib"            % "3.4.3"
+  "org.apache.spark"  %% "spark-mllib"            % "3.4.3" % Provided
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
 
-  "org.apache.spark" %% "spark-kubernetes"        % "3.4.3",
+  "org.apache.spark" %% "spark-kubernetes"        % "3.4.3" % Provided,
 
   // Mongo-Spark connector 10.3.0
   "org.mongodb.spark" %% "mongo-spark-connector"  % "10.3.0",
@@ -37,10 +37,6 @@ libraryDependencies ++= Seq(
   "de.heikoseeberger" %% "akka-http-circe"        % "1.39.2",
   "io.circe"          %% "circe-generic"          % "0.14.9"
 )
-
-// Spark 3.4.x требует scala-parser-combinators ≥ 2.4.0
-dependencyOverrides +=
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
 
 mainClass in Compile := Some("DataMartServer")
 
