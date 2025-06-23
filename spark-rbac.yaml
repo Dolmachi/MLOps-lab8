@@ -10,7 +10,6 @@ metadata:
   name: spark-role
   namespace: default
 rules:
-# ─── ядро работы драйвера ──────────────────────────────
 - apiGroups: [""]
   resources:
     - pods
@@ -21,7 +20,6 @@ rules:
     - persistentvolumeclaims
     - endpoints
   verbs: ["create", "delete", "deletecollection", "get", "list", "watch", "patch", "update"]
-# ─── чтение events для graceful-shutdown ───────────────
 - apiGroups: ["events.k8s.io", ""]
   resources: ["events"]
   verbs: ["create", "get", "list", "watch"]

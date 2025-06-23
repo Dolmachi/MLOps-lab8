@@ -5,7 +5,6 @@ scalaVersion := "2.12.15"
 val sparkVer = "3.5.6"
 
 libraryDependencies ++= Seq(
-  // Spark
   "org.apache.spark"  %% "spark-sql"       % sparkVer % Provided
     exclude("org.slf4j", "slf4j-simple")
     exclude("org.slf4j", "slf4j-log4j12"),
@@ -41,16 +40,16 @@ libraryDependencies ++= Seq(
     exclude("org.typelevel", "cats-free_2.12"),
 
   // Явные зависимости Cats, чтобы подтянуть все нужные типы
-  "org.typelevel"     %% "cats-kernel"      % "2.7.0",
-  "org.typelevel"     %% "cats-core"        % "2.7.0",
-  "org.typelevel"     %% "cats-free"        % "2.7.0"
+  "org.typelevel"     %% "cats-kernel"      % "2.1.1",
+  "org.typelevel"     %% "cats-core"        % "2.1.1",
+  "org.typelevel"     %% "cats-free"        % "2.1.1"
 )
 
 // Принудительно ставим одну версию Cats во всём classpath
 dependencyOverrides ++= Seq(
-  "org.typelevel" %% "cats-kernel" % "2.7.0",
-  "org.typelevel" %% "cats-core"   % "2.7.0",
-  "org.typelevel" %% "cats-free"   % "2.7.0"
+  "org.typelevel" %% "cats-kernel" % "2.1.1",
+  "org.typelevel" %% "cats-core"   % "2.1.1",
+  "org.typelevel" %% "cats-free"   % "2.1.1"
 )
 
 // Scala-парсеры (оставляем как прежде)
