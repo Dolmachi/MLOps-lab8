@@ -15,8 +15,7 @@ spec:
       serviceAccountName: spark
       containers:
       - name: datamart
-        image: datamart-image
-        imagePullPolicy: Never
+        image: travissscottt/datamart-image:latest
         resources:
           requests:
             memory: "3Gi"

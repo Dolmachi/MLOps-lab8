@@ -1,0 +1,4 @@
+FROM mongo
+
+COPY data/mongo-dump /dump
+COPY scripts/restore.sh /docker-entrypoint-initdb.d/restore.sh
