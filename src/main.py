@@ -1,4 +1,3 @@
-import time
 import json
 import requests
 from logger   import Logger
@@ -28,8 +27,6 @@ class InferenceJob:
             self.current_partition += 1
             self.log.info(f"Отправлено {batch} порций")
         
-        self.log.info("Приостановка 5 минут!")
-        time.sleep(300)
         self.pred.stop()
         self.log.info("Работа завершена")
 
