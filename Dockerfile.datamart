@@ -1,5 +1,8 @@
 FROM spark:3.5.6-scala2.12-java17-python3-ubuntu
 
+RUN find "$SPARK_HOME/jars" -name 'cats-*_2.12-*.jar' -delete \
+ && echo "Cats jars removed from \$SPARK_HOME/jars"
+
 WORKDIR /opt/app
 
 COPY datamart/target/scala-2.12/DataMart-assembly-1.0.jar .
