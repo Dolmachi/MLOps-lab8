@@ -19,10 +19,10 @@ spec:
         - containerPort: 7078
         resources:
           requests:
-            memory: "3Gi"
+            memory: "2Gi"
             cpu: "2"
           limits:
-            memory: "4Gi"
+            memory: "3Gi"
             cpu: "2"
       restartPolicy: Never
 ---
